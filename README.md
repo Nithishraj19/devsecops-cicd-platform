@@ -81,7 +81,7 @@ Stop with docker compose -f jenkins/compose.yml down. Use down -v only if you in
 | Stage | Check or action | Release effect |
 |---|---|---|
 | Checkout and version | Git commit plus build-number tag | Produces unique version |
-| Install and unit tests | npm ci, node --test | Failure blocks release |
+| Install and unit tests | npm ci, Node tests with coverage report | Test failure blocks release; coverage is informational |
 | SAST / lint | ESLint security rules | Finding blocks release |
 | Dependency SCA | npm audit --audit-level=high | HIGH/CRITICAL audit exit blocks release |
 | Secret scan | Gitleaks Git scan, redacted output | Detected secret blocks release |
@@ -114,7 +114,7 @@ That test stubs Docker and curl: it verifies the rollback command path, but does
 
 The implementation was exercised locally:
 
-- Node unit tests, ESLint security rules, and npm audit passed; audit reported zero known vulnerabilities at scan time.
+- Node unit tests passed with coverage reporting enabled, ESLint security rules passed, and npm audit reported zero known vulnerabilities at scan time. Coverage is informational; no minimum percentage is enforced.
 - Gitleaks directory scan had no findings. The temporary configured canary was detected and returned nonzero as expected.
 - Trivy filesystem scan and built-image report/gate completed; no HIGH/CRITICAL image findings remained after removing unused bundled npm/Yarn trees from runtime.
 - Docker image build and container startup passed; the container ran as node and reported healthy.

@@ -6,13 +6,13 @@ This is a **local-first DevSecOps hands-on portfolio project**. GitHub hosts sou
 
 ## Flow
 
-1. A developer pushes a branch or opens a pull request. GitHub starts a Jenkins SCM job; webhook configuration is an external repository setting and is not claimed as preconfigured.
+1. A developer pushes a branch or opens a pull request. A configured GitHub webhook can trigger Jenkins; webhook setup is an external repository setting and is not preconfigured by this project.
 2. Jenkins checks out the commit and derives a unique image tag from build number and commit prefix.
-3. It installs from package-lock.json, runs Node tests, ESLint security rules, npm audit, and Gitleaks. A nonzero check stops the pipeline.
+3. It installs from package-lock.json, runs Node tests with built-in coverage reporting, ESLint security rules, npm audit, and Gitleaks. A nonzero check stops the pipeline. Coverage is reported; no minimum percentage is enforced.
 4. Docker builds the app image. Trivy evaluates the local image. The report retains lower-severity findings; the selected gate blocks HIGH or CRITICAL vulnerabilities and ignores unfixed findings.
-5. On main, Jenkins pushes the scanned versioned artifact into the local registry. Compose deploys that same reference.
+5. In a main branch build (for example, a Jenkins Multibranch Pipeline), Jenkins pushes the scanned, versioned artifact to the local registry at localhost:5000. Compose deploys that same image reference.
 6. The deployment script polls /health. A failure causes a redeploy of the last recorded healthy image and a second health validation.
-7. Jenkins console output reports completion or failure. Slack/email hooks remain optional integrations.
+7. Jenkins console output reports completion or failure. Slack/email are optional integrations. SonarQube is shown as an optional reference and is not a blocking pipeline stage.
 
 ## Trust and artifact boundaries
 
@@ -25,7 +25,7 @@ This is a **local-first DevSecOps hands-on portfolio project**. GitHub hosts sou
 
 ## Security gates and limitations
 
-Unit tests, lint, dependency audit, Gitleaks, and Trivy image scanning are blocking checks in Jenkinsfile. npm audit uses HIGH as its minimum failing severity; Trivy uses HIGH and CRITICAL and ignores unfixed findings. These thresholds are explicit project policy choices. ESLint security rules are lightweight source analysis, not equivalent to a mature commercial SAST engine. SonarQube is optional and separately configured; it is not a required pipeline result.
+Unit tests (with coverage reporting), lint, dependency audit, Gitleaks, and Trivy image scanning are blocking checks in Jenkinsfile. npm audit uses HIGH as its minimum failing severity; Trivy uses HIGH and CRITICAL and ignores unfixed findings. These thresholds are explicit project policy choices. ESLint security rules are lightweight source analysis, not equivalent to a mature commercial SAST engine. SonarQube is optional and separately configured; it is not a required pipeline result.
 
 ## Local deployment and rollback
 
