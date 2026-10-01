@@ -1,0 +1,13 @@
+severity:
+  - UNKNOWN
+  - LOW
+  - MEDIUM
+  - HIGH
+  - CRITICAL
+ignore-unfixed: true
+exit-code: "0"
+scanners:
+  - vuln
+  - misconfig
+  - secret
+format: table

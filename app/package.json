@@ -1,0 +1,10 @@
+{
+  "name": "devsecops-demo-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Small HTTP service used to exercise the DevSecOps pipeline",
+  "main": "src/server.js",
+  "scripts": { "start": "node src/server.js", "test": "node --test test/*.test.js", "lint": "eslint src test", "audit": "npm audit --audit-level=high" },
+  "engines": { "node": ">=22" },
+  "devDependencies": { "eslint": "^9.39.0", "eslint-plugin-security": "^3.0.1" }
+}

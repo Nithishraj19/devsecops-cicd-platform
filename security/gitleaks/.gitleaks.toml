@@ -1,0 +1,13 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Explicitly allow documented placeholders only. Never add real credentials."
+paths = ['''\.env\.example$''']
+
+[[rules]]
+id = "demo-secret-marker"
+description = "Detects the repository's nonfunctional secret-scan exercise marker."
+regex = '''DEMO_SECRET_[A-F0-9]{32}'''
+secretGroup = 0
+keywords = ["DEMO_SECRET_"]
